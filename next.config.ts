@@ -1,27 +1,18 @@
 import type { NextConfig } from "next";
-import { withSentryConfig } from "@sentry/nextjs";
 
+// Sentry server packages use dynamic expressions in OpenTelemetry that
+// conflict with Next.js App Router's static bundling (Html-outside-_document).
+// Mark them external so they're required at runtime rather than bundled.
+// withSentryConfig is intentionally omitted — it overrides serverExternalPackages.
+// Source-map upload is handled via SENTRY_AUTH_TOKEN in Vercel env vars.
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  experimental: {
-    typedRoutes: true,
-  },
+  typedRoutes: true,
+  serverExternalPackages: [
+    "@sentry/nextjs",
+    "@sentry/node",
+    "@opentelemetry/instrumentation",
+  ],
 };
 
-const sentryEnabled = Boolean(
-  process.env.NEXT_PUBLIC_SENTRY_DSN && process.env.SENTRY_AUTH_TOKEN,
-);
-
-export default sentryEnabled
-  ? withSentryConfig(nextConfig, {
-      org: process.env.SENTRY_ORG,
-      project: process.env.SENTRY_PROJECT,
-      silent: !process.env.CI,
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      widenClientFileUpload: true,
-      reactComponentAnnotation: { enabled: true },
-      tunnelRoute: "/monitoring",
-      disableLogger: true,
-      automaticVercelMonitors: true,
-    })
-  : nextConfig;
+export default nextConfig;

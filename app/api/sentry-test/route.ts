@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import * as Sentry from "@sentry/nextjs";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +15,7 @@ export async function GET(): Promise<Response> {
     );
   }
 
+  const Sentry = await import("@sentry/nextjs");
   const eventId = Sentry.captureMessage(
     `jordan-build-log synthetic test (${new Date().toISOString()})`,
     "info",
