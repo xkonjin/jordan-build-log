@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+dist
+.env
+.env.local
+.env.*.local
+.DS_Store
+*.log
+.vercel
+.sentry/
+.sentryclirc
+coverage
+bun.lockb-tmp
