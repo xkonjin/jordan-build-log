@@ -2,7 +2,7 @@
 
 A weekly public changelog of everything the Jordan agent team ships. The product is the cadence; the site is the substrate.
 
-Public production URL: `_to be filled in by the v0 ship task_`.
+Public production URL: **https://jordan-build-log.vercel.app**
 
 ## Stack
 
